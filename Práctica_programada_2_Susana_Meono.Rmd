@@ -1,0 +1,43 @@
+---
+title: 'Práctica programada 2'
+author: "Susana Meoño Piedra"
+date: "2023-07-28"
+output: html_document
+---
+
+a. Cree un archivo Rmarkdown para resolver esta práctica programada. En el chunk de setup cargue las librerías que considere necesarias para resolver la práctica. Los datos para trabajar puede cargarlos con la función read_csv de readr directamente de la siguiente dirección: “https://raw.githubusercontent.com/isa229/programacion_analisis_datos_ii/main/air_quality_index.csv”. (1pto)
+
+Este conjunto de datos contiene información acerca del índice de calidad del aire (AQI) de distintas ciudades alrededor del mundo. Las coordenadas geográficas de estas se encuentran como lat (latitud) y lng (longitud).
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(datasets)
+library(datos)
+library(readr) #lectura y carga de datos
+library(readxl)
+library(tidyr)# doma de datos
+library(janitor) #limpieza de datos
+library(lubridate)
+library(hms)
+library(stringr)
+library(gt)
+library(tinytex)
+library(writexl) # para guardar datos como excel
+library(utils)
+library(RSQLite) # para interactuar con bases de datos sqlite
+library(DBI) # ayuda con conexiones a bbdd
+library(leaflet)
+library(ggplot2)
+library(plotly)
+```
+
+Carga de los datos:
+
+```{r}
+datos_air_quality <- read_csv("https://raw.githubusercontent.com/isa229/programacion_analisis_datos_ii/main/air_quality_index.csv") 
+clean_names(datos_air_quality)
+View(datos_air_quality)
+
+```
+
