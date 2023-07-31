@@ -1,13 +1,11 @@
 ---
 title: 'Práctica programada 2'
 author: "Susana Meoño Piedra"
-date: "2023-07-28"
+date: "2023-08-03"
 output: html_document
 ---
 
 a. Cree un archivo Rmarkdown para resolver esta práctica programada. En el chunk de setup cargue las librerías que considere necesarias para resolver la práctica. Los datos para trabajar puede cargarlos con la función read_csv de readr directamente de la siguiente dirección: “https://raw.githubusercontent.com/isa229/programacion_analisis_datos_ii/main/air_quality_index.csv”. (1pto)
-
-Este conjunto de datos contiene información acerca del índice de calidad del aire (AQI) de distintas ciudades alrededor del mundo. Las coordenadas geográficas de estas se encuentran como lat (latitud) y lng (longitud).
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -38,6 +36,20 @@ Carga de los datos:
 datos_air_quality <- read_csv("https://raw.githubusercontent.com/isa229/programacion_analisis_datos_ii/main/air_quality_index.csv") 
 clean_names(datos_air_quality)
 View(datos_air_quality)
-
 ```
+
+Este conjunto de datos contiene información acerca del índice de calidad del aire (AQI) de distintas ciudades alrededor del mundo. Las coordenadas geográficas de estas se encuentran como lat (latitud) y lng (longitud).
+
+
+b. Cuántas categorías diferentes de AQI (AQI Category) hay en este conjunto de datos? Cuáles son? (2pts)
+
+```{r}
+conteo_categorias <- datos_air_quality |>
+  distinct(`AQI Category`)|>
+  select(`AQI Category`)
+View(conteo_categorias)
+
+#En total hay 6 categorías distintas de AQI: Moderate, Good, Unhealthy, Very Unhealthy, Unhealthy for Sensitive Groups y Hazardous.
+```
+
 
