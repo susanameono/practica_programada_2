@@ -95,4 +95,75 @@ ciudades_AQI_gt
 ```
 
 
+d. Obtenga el promedio del AQI Value por país, y cree 2 tablas: Una que muestre los 10 países con los
+valores más bajos de AQI, y otra que muestre los 10 países con los valores más altos de AQI. Presente
+estas tablas con el paquete gt, añadiendo títulos y subtítulos (10pts)
 
+```{r}
+#Obtengo el promedio de AQI Value por país
+promedio_AQI <- datos_air_quality |>
+  group_by(Country)|>
+  summarise(promedio= mean(`AQI Value`))
+View(promedio_AQI)
+```
+
+```{r}
+#Creo una tabla que muestre los 10 países con los valores más bajos de AQI
+menores_AQI <- promedio_AQI |>
+  arrange(promedio)|>
+  head(10) 
+View(menores_AQI)
+```
+
+```{r}
+#Traduzco las filas
+menores_AQI <- data.frame(Country = c("Palau", "Islas Solomon", "Maldivas", "Islandia", "Papua Nueva Guinea", "Bolivia", "Butan", "Luxemburgo", "Seychelles", "Uruguay"), 
+                           promedio = c(16.00,18.00,19.00,23.00,24.73,25.49,26.00,26.00,26.00,26.00))
+```
+
+```{r}
+#Traduzco las columnas
+colnames(menores_AQI) <- c("PAÍS", "PROMEDIO AQI")
+```
+
+```{r}
+#Convierto la tabla en un objeto gt y le agrego títulos y subtítulos
+menores_AQI <- menores_AQI |>
+ gt() |> 
+   tab_header(
+  title = "Top 10 de Países con el menor valor promedio del AQI" ,
+  subtitle = "(AQI) Índice de Calidad del Aire"
+  )
+menores_AQI
+```
+
+
+```{r}
+#Creo una tabla que muestre los 10 países con los valores más altos de AQI
+mayores_AQI <- promedio_AQI |>
+  arrange(desc(promedio))|>
+  head(10) 
+View(mayores_AQI)
+```
+
+```{r}
+#Traduzco las filas
+mayores_AQI <- data.frame(Country = c("República de Korea", "Baréin", "Pakistán", "Arabia Saudita", "Mauritania", "Qatar", "Emiratos Árabes Unidos", "Aruba", "Kuwait", "Omán"), 
+                           promedio = c(421.00,188.00,184.20,168.00,164.00,164.00,163.67,163.00,161.00,155.00))
+```
+
+```{r}
+#Traduzco las columnas
+colnames(mayores_AQI) <- c("PAÍS", "PROMEDIO AQI")
+```
+
+```{r}
+#Convierto la tabla en un objeto gt y le agrego títulos y subtítulos
+mayores_AQI <- mayores_AQI |>
+ gt() |> 
+   tab_header(
+  title = "Top 10 de Países con el mayor valor promedio del AQI" ,
+  subtitle = "(AQI) Índice de Calidad del Aire"
+  )
+mayores_AQI
+```
