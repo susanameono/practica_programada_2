@@ -116,7 +116,7 @@ View(menores_AQI)
 ```
 
 ```{r}
-#Traduzco las filas
+#Traduzco las filas (en este caso creé un nuevo dataframe porque son pocas filas, solo 10)
 menores_AQI <- data.frame(Country = c("Palau", "Islas Solomon", "Maldivas", "Islandia", "Papua Nueva Guinea", "Bolivia", "Butan", "Luxemburgo", "Seychelles", "Uruguay"), 
                            promedio = c(16.00,18.00,19.00,23.00,24.73,25.49,26.00,26.00,26.00,26.00))
 ```
@@ -147,13 +147,13 @@ View(mayores_AQI)
 ```
 
 ```{r}
-#Traduzco las filas
-mayores_AQI <- data.frame(Country = c("República de Korea", "Baréin", "Pakistán", "Arabia Saudita", "Mauritania", "Qatar", "Emiratos Árabes Unidos", "Aruba", "Kuwait", "Omán"), 
+#Traduzco las filas (en este caso creé un nuevo dataframe porque son pocas filas, solo 10)
+mayores_AQI <- data.frame(Country = c("República de Corea", "Bahréin", "Pakistán", "Arabia Saudita", "Mauritania", "Qatar", "Emiratos Árabes Unidos", "Aruba", "Kuwait", "Omán"), 
                            promedio = c(421.00,188.00,184.20,168.00,164.00,164.00,163.67,163.00,161.00,155.00))
 ```
 
 ```{r}
-#Traduzco las columnas
+#Renombro las columnas del DF anterior
 colnames(mayores_AQI) <- c("PAÍS", "PROMEDIO AQI")
 ```
 
@@ -166,4 +166,39 @@ mayores_AQI <- mayores_AQI |>
   subtitle = "(AQI) Índice de Calidad del Aire"
   )
 mayores_AQI
+```
+
+
+e. Para los 10 países con los valores promedios más altos de AQI, muestrelos en un mapa de leaflet usando addMarkers o un addCircles. En el popup debe colocar el valor promedio del AQI. (6pts)
+
+```{r}
+#Creo un nuevo DF que incluya latitud y longitud para c/u de los 10 países (en este caso creé un nuevo dataframe porque son pocos paises, solo 10. Además, los valores de latitud y longitud fueron tomados de geodatos.net por PAÍS y no del dataframe original, ya que en dicho DF vienen los valores para varias ciudades por cada país).
+
+mayores_AQI_mapa <- data.frame(PAÍS = c("República de Corea", "Bahréin", "Pakistán", "Arabia Saudita", "Mauritania", "Qatar", "Emiratos Árabes Unidos", "Aruba", "Kuwait", "Omán"), 
+                           `PROMEDIO_AQI` = c('421.00','188.00','184.20','168.00','164.00','164.00','163.67','163.00','161.00','155.00'),
+                           LATITUD = c(35.907757, 25.930414, 30.375321, 23.885942, 21.00789, 25.354826, 23.424076, 12.52111, 29.31166, 21.512583),
+                          LONGITUD = c(127.766922,50.637772, 69.345116, 45.079162, -10.940835, 51.183884, 53.847818, -69.968338, 47.481766, 55.923255))
+
+# La variable PROMEDIO_AQI la incluyo como character para poder incluirla luego en el popup del mapa siguiente
+```
+
+```{r}
+# Finalmente genero el mapa, en esta primera opción, utilizo addMarkers:
+
+mi_mapa <- mayores_AQI_mapa |> 
+  leaflet (options = leafletOptions(minZoom = 1, maxZoom = 5)) |> 
+  addTiles() |> 
+  addMarkers(lng = ~LONGITUD, lat = ~LATITUD, popup = ~PROMEDIO_AQI) # añade marcadores usando las columnas indicadas del dataframe
+mi_mapa
+```
+
+```{r}
+# O bien, utilizo addCircles:
+
+mi_mapa <- mayores_AQI_mapa |> 
+  leaflet (options = leafletOptions(minZoom = 1, maxZoom = 5)) |> 
+  addTiles() |> 
+  addCircles(lng = ~LONGITUD, lat = ~LATITUD, radius = 100, color = "red", popup = ~PROMEDIO_AQI)
+
+mi_mapa
 ```
