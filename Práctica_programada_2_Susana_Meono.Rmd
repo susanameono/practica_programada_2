@@ -122,7 +122,7 @@ menores_AQI <- data.frame(Country = c("Palau", "Islas Solomon", "Maldivas", "Isl
 ```
 
 ```{r}
-#Traduzco las columnas
+#Renombro las columnas del DF anterior
 colnames(menores_AQI) <- c("PAÍS", "PROMEDIO AQI")
 ```
 
@@ -199,6 +199,32 @@ mi_mapa <- mayores_AQI_mapa |>
   leaflet (options = leafletOptions(minZoom = 1, maxZoom = 5)) |> 
   addTiles() |> 
   addCircles(lng = ~LONGITUD, lat = ~LATITUD, radius = 100, color = "red", popup = ~PROMEDIO_AQI)
-
 mi_mapa
 ```
+
+
+f. Escriba el código que exporte los datos en un excel, de tal manera que cada pestaña tenga solamente los datos de una categoría de AQI. (Es decir una pestaña para las ciudades cuya categoría es “Good” o “Buena”, otra para los que la categoría es “Moderate” y así para cada categoría). (5pts)
+
+```{r}
+# aquí genero un excel con todos los datos del dataframe en una sola hoja de excel
+write_xlsx(datos_air_quality, path = "datos/AQI_en_excel.xlsx")
+```
+
+```{r}
+# aquí genero un excel con una pestaña para cada categoría de AQI
+datos_air_quality <- list("Good" = datos_air_quality|>
+                      filter(`AQI Category` == "Good"), 
+                     "Moderate" = datos_air_quality |>
+                      filter(`AQI Category` == "Moderate"),
+                     "Unhealthy" = datos_air_quality |>
+                      filter(`AQI Category` == "Unhealthy"),
+                     "Very Unhealthy" = datos_air_quality |>
+                      filter(`AQI Category` == "Very Unhealthy"),
+                      "Unhealthy for Sensitive Groups" = datos_air_quality |>
+                      filter(`AQI Category` == "Unhealthy for Sensitive Groups"),
+                     "Hazardous" = datos_air_quality |>
+                      filter(`AQI Category` == "Hazardous"))
+                      
+write_xlsx(datos_air_quality, path = "datos/categorías_AQI_en_excel.xlsx")
+```
+
