@@ -1,7 +1,7 @@
 ---
 title: 'Práctica programada 2'
 author: "Susana Meoño Piedra"
-date: "2023-08-03"
+date: "2023-08-04"
 output: html_document
 ---
 
@@ -28,6 +28,7 @@ library(DBI) # ayuda con conexiones a bbdd
 library(leaflet)
 library(ggplot2)
 library(plotly)
+library(utils)
 ```
 
 Carga de los datos:
@@ -51,5 +52,47 @@ View(conteo_categorias)
 
 #En total hay 6 categorías distintas de AQI: Moderate, Good, Unhealthy, Very Unhealthy, Unhealthy for Sensitive Groups y Hazardous.
 ```
+
+
+c. Cree una tabla que indique la cantidad de ciudades que hay en cada categoría de AQI (AQI Category).
+Adicionalmente, traduzca las categorías a español, por ejemplo “Good” sería “Bueno”. Presente esta tabla con el paquete gt, añadiendo títulos y subtítulos (10pts).
+
+```{r} 
+#Primero creo la tabla solicitada
+ciudades_AQI <- datos_air_quality |>
+  group_by(`AQI Category`)|>
+  summarise(cantidad_ciudades = NROW(City))
+View(ciudades_AQI)
+```
+
+```{r}
+#Luego traduzco las categorías
+ciudades_AQI <- data.frame(Categoría_AQI = c("Bueno", "Peligroso", "Moderado", "Insalubre", "Insalubre para grupos sensibles", "Muy insalubre"), 
+                           Cantidad_Ciudades = c(7708,62,7054,871,869,131))
+```
+
+```{r}
+#Ajusto el nombre de las columnas
+colnames(ciudades_AQI) <- c("CATEGORÍA AQI", "CANTIDAD DE CIUDADES")
+```
+
+```{r}
+#Convierto la tabla a un objeto gt
+ciudades_AQI_gt <- ciudades_AQI |>
+  gt() 
+ciudades_AQI_gt
+```
+
+```{r}
+#Agrego títulos y subtítulos
+ciudades_AQI_gt <- ciudades_AQI |>
+ gt() |> 
+   tab_header(
+  title = "Cantidad de ciudades según Categoría del Índice de Calidad del Aire (AQI)" ,
+  subtitle = "Datos de la calidad del aire mundial"
+  )
+ciudades_AQI_gt
+```
+
 
 
